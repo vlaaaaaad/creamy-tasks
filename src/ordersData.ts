@@ -196,7 +196,7 @@ export const ordersData = [
         },
         uom: {
           id: 2,
-          value: "Tones",
+          value: "Tons",
         },
         qty: 18,
         status: {

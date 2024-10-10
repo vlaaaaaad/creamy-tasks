@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import { ordersData } from "./ordersData.ts";
 
-function App() {
-  const [products, setProducts] = useState(
-    ordersData.flatMap((order) => order.products)
-  );
-  const [available, setAvailable] = useState(true);
-  const [pending, setPending] = useState(true);
-
-  useEffect(() => {
-    const reducedProducts = products.reduce((accumulator, currentValue) => {
+const App = () => {
+  const initialProducts = ordersData
+    .flatMap((order) => order.products)
+    .reduce((accumulator, currentValue) => {
       const existingProduct = accumulator.find(
         (product) =>
-          product.name === currentValue.name &&
-          product.status.value === currentValue.status.value
+          product.id === currentValue.id &&
+          product.status.id === currentValue.status.id
       );
       if (existingProduct) {
         existingProduct.qty += currentValue.qty;
@@ -23,79 +18,88 @@ function App() {
       }
       return accumulator;
     }, []);
-    setProducts(reducedProducts);
-  }, []);
+  const [products, setProducts] = useState(initialProducts);
+  const [available, setAvailable] = useState(false);
+  const [pending, setPending] = useState(false);
+
+  const filterBy = (statusId) => {
+    setProducts(
+      initialProducts.filter((product) => product.status.id === statusId)
+    );
+  };
+
+  const resetProducts = () => {
+    setAvailable(false);
+    setPending(false);
+    setProducts(initialProducts);
+  };
 
   return (
     <div className="App">
-      <main>
-        <div className="filterSection">
-          <div className="checkbox">
-            <input
-              type="checkbox"
-              id="avaliable"
-              checked={available}
-              disabled={pending}
-              onChange={() => {
+      <div className="filterSection">
+        <div className="checkbox">
+          <input
+            type="checkbox"
+            id="avaliable"
+            checked={available}
+            onChange={() => {
+              if (!available) {
                 setAvailable(!available);
-              }}
-            />
-            <label htmlFor="avaliable">Avaliable</label>
-          </div>
-          <div className="checkbox">
-            <input
-              type="checkbox"
-              id="pending"
-              checked={pending}
-              disabled={available}
-              onChange={() => {
-                setPending(!pending);
-              }}
-            />
-            <label htmlFor="pending">Pending</label>
-          </div>
-          <button
-            disabled={!available && !pending}
-            onClick={() => {
-              setAvailable(false);
-              setPending(false);
+                setPending(available);
+                filterBy(1);
+              } else {
+                resetProducts();
+              }
             }}
-          >
-            Clear filters
-          </button>
+          />
+          <label htmlFor="avaliable">Avaliable</label>
         </div>
-        <table>
-          {/* <caption>Orders</caption> */}
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Location</th>
-              <th>UOM</th>
-              <th>Qty</th>
-              <th>Status</th>
+        <div className="checkbox">
+          <input
+            type="checkbox"
+            id="pending"
+            checked={pending}
+            onChange={() => {
+              if (!pending) {
+                filterBy(2);
+                setPending(!pending);
+                setAvailable(pending);
+              } else {
+                resetProducts();
+              }
+            }}
+          />
+          <label htmlFor="pending">Pending</label>
+        </div>
+        <button disabled={!available && !pending} onClick={resetProducts}>
+          Clear filters
+        </button>
+      </div>
+      <table>
+        {/* <caption>Orders</caption> */}
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>UOM</th>
+            <th>Qty</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={crypto.randomUUID()}>
+              <td key={crypto.randomUUID()}>{product.name}</td>
+              <td key={crypto.randomUUID()}>{product.location.name}</td>
+              <td key={crypto.randomUUID()}>{product.uom.value}</td>
+              <td key={crypto.randomUUID()}>{product.qty}</td>
+              <td key={crypto.randomUUID()}>{product.status.value}</td>
             </tr>
-          </thead>
-          <tbody>
-            {products
-              .filter(
-                (product) =>
-                  (product.status.value === "Available" && available) ||
-                  (product.status.value === "Pending" && pending)
-              )
-              .map((product) => (
-                <tr key={crypto.randomUUID()}>
-                  <td key={crypto.randomUUID()}>{product.name}</td>
-                  <td key={crypto.randomUUID()}>{product.location.name}</td>
-                  <td key={crypto.randomUUID()}>{product.uom.value}</td>
-                  <td key={crypto.randomUUID()}>{product.qty}</td>
-                  <td key={crypto.randomUUID()}>{product.status.value}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </main>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default App;
