@@ -70,7 +70,11 @@ export const ProductTable = () => {
           />
           <label htmlFor="pending">Pending</label>
         </div>
-        <button disabled={!available && !pending} onClick={resetProducts}>
+        <button
+          disabled={!available && !pending}
+          onClick={resetProducts}
+          className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded"
+        >
           Clear filters
         </button>
       </div>
