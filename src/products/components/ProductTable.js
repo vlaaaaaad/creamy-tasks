@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { ordersData } from "../../ordersData.ts";
-//import { initialProductsContainer } from "../containers/ProductsContainer.js";
+import * as R from "ramda";
 
 export const ProductTable = ({
   products,
@@ -24,6 +22,7 @@ export const ProductTable = ({
         <label htmlFor="avaliable" className="cursor-pointer">
           Avaliable
         </label>
+
         <input
           type="checkbox"
           id="pending"
@@ -33,7 +32,6 @@ export const ProductTable = ({
             handleFilter(2);
           }}
         />
-
         <label htmlFor="pending" className="cursor-pointer">
           Pending
         </label>
@@ -59,18 +57,21 @@ export const ProductTable = ({
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr
-              key={crypto.randomUUID()}
-              className="odd:bg-zinc-700 even:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 [&>*]:border [&>*]:border-zinc-600"
-            >
-              <td key={crypto.randomUUID()}>{product.name}</td>
-              <td key={crypto.randomUUID()}>{product.location.name}</td>
-              <td key={crypto.randomUUID()}>{product.uom.value}</td>
-              <td key={crypto.randomUUID()}>{product.qty}</td>
-              <td key={crypto.randomUUID()}>{product.status.value}</td>
-            </tr>
-          ))}
+          {R.map(
+            (product) => (
+              <tr
+                key={crypto.randomUUID()}
+                className="odd:bg-zinc-700 even:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 [&>*]:border [&>*]:border-zinc-600"
+              >
+                <td key={crypto.randomUUID()}>{product.name}</td>
+                <td key={crypto.randomUUID()}>{product.location.name}</td>
+                <td key={crypto.randomUUID()}>{product.uom.value}</td>
+                <td key={crypto.randomUUID()}>{product.qty}</td>
+                <td key={crypto.randomUUID()}>{product.status.value}</td>
+              </tr>
+            ),
+            products
+          )}
         </tbody>
       </table>
     </div>
