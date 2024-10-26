@@ -49,8 +49,8 @@ export const ordersData = [
         },
         qty: 15,
         status: {
-          id: 1,
-          value: "Available",
+          id: 2,
+          value: "Pending",
         },
       },
     ],
@@ -105,8 +105,8 @@ export const ordersData = [
         },
         qty: 10,
         status: {
-          id: 1,
-          value: "Available",
+          id: 2,
+          value: "Pending",
         },
       },
     ],
@@ -127,8 +127,8 @@ export const ordersData = [
         },
         qty: 20,
         status: {
-          id: 1,
-          value: "Available",
+          id: 2,
+          value: "Pending",
         },
       },
       {
@@ -144,8 +144,8 @@ export const ordersData = [
         },
         qty: 12,
         status: {
-          id: 2,
-          value: "Pending",
+          id: 1,
+          value: "Available",
         },
       },
       {

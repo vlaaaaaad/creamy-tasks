@@ -1,37 +1,14 @@
 import { useState } from "react";
 import { ordersData } from "../../ordersData.ts";
+//import { initialProductsContainer } from "../containers/ProductsContainer.js";
 
-export const ProductTable = () => {
-  const initialProducts = ordersData
-    .flatMap((order) => order.products)
-    .reduce((accumulator, currentValue) => {
-      const existingProduct = accumulator.find(
-        (product) =>
-          product.id === currentValue.id &&
-          product.status.id === currentValue.status.id
-      );
-      if (existingProduct) {
-        existingProduct.qty += currentValue.qty;
-      } else {
-        accumulator.push({ ...currentValue });
-      }
-      return accumulator;
-    }, []);
-  const [products, setProducts] = useState(initialProducts);
-  const [available, setAvailable] = useState(false);
-  const [pending, setPending] = useState(false);
-
-  const filterBy = (statusId) => {
-    setProducts(
-      initialProducts.filter((product) => product.status.id === statusId)
-    );
-  };
-  const resetProducts = () => {
-    setAvailable(false);
-    setPending(false);
-    setProducts(initialProducts);
-  };
-
+export const ProductTable = ({
+  products,
+  available,
+  pending,
+  handleFilter,
+  resetProducts,
+}) => {
   return (
     <div className="m-10 text-zinc-100">
       <div className="bg-zinc-800 border border-b-0 border-zinc-600 px-2.5 py-1.5 flex items-center float-start">
@@ -41,13 +18,7 @@ export const ProductTable = () => {
           className="mr-1 w-4 h-4 cursor-pointer"
           checked={available}
           onChange={() => {
-            if (!available) {
-              setAvailable(!available);
-              setPending(available);
-              filterBy(1);
-            } else {
-              resetProducts();
-            }
+            handleFilter(1);
           }}
         />
         <label htmlFor="avaliable" className="cursor-pointer">
@@ -59,13 +30,7 @@ export const ProductTable = () => {
           className="ml-2.5 mr-1 w-4 h-4 cursor-pointer"
           checked={pending}
           onChange={() => {
-            if (!pending) {
-              filterBy(2);
-              setPending(!pending);
-              setAvailable(pending);
-            } else {
-              resetProducts();
-            }
+            handleFilter(2);
           }}
         />
 
@@ -79,7 +44,7 @@ export const ProductTable = () => {
           onClick={resetProducts}
           className="ml-2.5 inline-block rounded bg-red-900 disabled:bg-zinc-700 hover:bg-red-950 px-3 py-1.5 text-xs font-bold uppercase shadow-dark-3 transition duration-500 ease-in-out"
         >
-          Clear filters
+          Clear filter
         </button>
       </div>
       <table className="table-auto w-full text-center border border-zinc-600">

@@ -1,15 +1,11 @@
-import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
-import { ProductTable } from "./products/components/ProductTable";
 import "./index.css";
+import * as Constants from "./products/constants.js";
+import AppRoutes from "./products/routes.js";
 
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<ProductTable />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <AppRoutes />
     </div>
   );
 };
