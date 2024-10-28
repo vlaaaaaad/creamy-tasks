@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ordersData } from "../../ordersData.ts";
-import { ProductTable } from "../components/ProductTable.js";
+import { ordersData } from "products/ordersData.ts";
+import { ProductTable } from "products/components/ProductTable.js";
 import * as R from "ramda";
 
 const initialProducts = R.reduce(
@@ -23,12 +23,6 @@ export const ProductContainer = () => {
   const [products, setProducts] = useState(initialProducts);
   const [available, setAvailable] = useState(false);
   const [pending, setPending] = useState(false);
-
-  // const filterBy = (statusId) => {
-  //   setProducts(
-  //     initialProducts.filter((product) => product.status.id === statusId)
-  //   );
-  // };
 
   const resetProducts = () => {
     setAvailable(false);

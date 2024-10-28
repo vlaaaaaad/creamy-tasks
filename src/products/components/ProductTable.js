@@ -46,7 +46,6 @@ export const ProductTable = ({
         </button>
       </div>
       <table className="table-auto w-full text-center border border-zinc-600">
-        {/* <caption>Orders</caption> */}
         <thead className="bg-zinc-800">
           <tr className="border border-zinc-600 [&>*]:p-3.5 [&>*]:border [&>*]:border-zinc-600">
             <th>Name</th>

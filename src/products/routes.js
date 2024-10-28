@@ -1,15 +1,13 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ProductContainer } from "./containers/ProductsContainer";
+import { Routes, Route } from "react-router-dom";
+import { ProductContainer } from "products/containers/ProductsContainer";
 
-const AppRoutes = () => {
+const ProductsRoutes = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<ProductContainer />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route exact path="/" element={<ProductContainer />} />
+    </Routes>
   );
 };
 
-export default AppRoutes;
+export default ProductsRoutes;

@@ -1,11 +1,13 @@
-import "./index.css";
-import * as Constants from "./products/constants.js";
-import AppRoutes from "./products/routes.js";
+import * as Constants from "products/constants.js";
+import ProductsRoutes from "products/routes.js";
+import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
   return (
     <div>
-      <AppRoutes />
+      <BrowserRouter>
+        <ProductsRoutes />
+      </BrowserRouter>
     </div>
   );
 };
