@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ordersData } from "products/ordersData.ts";
 import { ProductTable } from "products/components/ProductTable.js";
+import { SelectedProducts } from "products/components/SelectedProducts.js";
 import * as R from "ramda";
 
 const initialProducts = R.reduce(
@@ -23,6 +24,7 @@ export const ProductContainer = () => {
   const [products, setProducts] = useState(initialProducts);
   const [available, setAvailable] = useState(false);
   const [pending, setPending] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   const resetProducts = () => {
     setAvailable(false);
@@ -54,13 +56,42 @@ export const ProductContainer = () => {
     }
   };
 
+  const handleCheckbox = (product) => {
+    if (!R.includes(product, selectedProducts)) {
+      setSelectedProducts(R.append(product, selectedProducts));
+    } else {
+      setSelectedProducts(
+        R.filter((currentProduct) => currentProduct.id !== product.id)
+      );
+    }
+  };
+
+  const countTotalQty = (qtyId, products) => {
+    let counter = 0;
+    R.forEach((product) => {
+      if (product.uom.id === qtyId) {
+        counter += product.qty;
+      }
+    }, products);
+    return counter;
+  };
+
   return (
-    <ProductTable
-      products={products}
-      available={available}
-      pending={pending}
-      handleFilter={handleFilter}
-      resetProducts={resetProducts}
-    />
+    <div>
+      <ProductTable
+        products={products}
+        available={available}
+        pending={pending}
+        handleFilter={handleFilter}
+        resetProducts={resetProducts}
+        handleCheckbox={handleCheckbox}
+        selectedProducts={selectedProducts}
+      />
+      <SelectedProducts
+        selectedProducts={selectedProducts}
+        totalTons={countTotalQty(2, selectedProducts)}
+        totalEach={countTotalQty(1, selectedProducts)}
+      />
+    </div>
   );
 };
