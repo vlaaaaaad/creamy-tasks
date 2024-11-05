@@ -1,10 +1,20 @@
 import * as R from "ramda";
+import { SelectedTableRow } from "products/components/SelectedTableRow.js";
 
 export const SelectedProducts = ({
   selectedProducts,
   totalTons,
   totalEach,
 }) => {
+  const emptySelectedProducts = (
+    <tr className="odd:bg-zinc-700 even:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 [&>*]:border [&>*]:border-zinc-600">
+      <td key={crypto.randomUUID()}>-</td>
+      <td colSpan={2} key={crypto.randomUUID()}>
+        -
+      </td>
+    </tr>
+  );
+
   return (
     <div className="m-10 text-zinc-100">
       <table className="table-auto w-1/3 text-center border border-zinc-600">
@@ -16,29 +26,12 @@ export const SelectedProducts = ({
           </tr>
         </thead>
         <tbody>
-          {R.isEmpty(selectedProducts) ? (
-            <tr className="odd:bg-zinc-700 even:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 [&>*]:border [&>*]:border-zinc-600">
-              <td key={crypto.randomUUID()}>-</td>
-              <td colSpan={2} key={crypto.randomUUID()}>
-                -
-              </td>
-            </tr>
-          ) : (
-            R.map(
-              (product) => (
-                <tr
-                  key={crypto.randomUUID()}
-                  className="odd:bg-zinc-700 even:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 [&>*]:border [&>*]:border-zinc-600"
-                >
-                  <td key={crypto.randomUUID()}>{product.name}</td>
-                  <td colSpan={2} key={crypto.randomUUID()}>
-                    {product.qty}
-                  </td>
-                </tr>
-              ),
-              selectedProducts
-            )
-          )}
+          {R.isEmpty(selectedProducts)
+            ? emptySelectedProducts
+            : R.map(
+                (product) => <SelectedTableRow product={product} />,
+                selectedProducts
+              )}
         </tbody>
 
         <tfoot>
