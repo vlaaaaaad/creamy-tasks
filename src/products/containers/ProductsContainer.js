@@ -31,7 +31,7 @@ export const ProductContainer = () => {
     if (products.length === selectedProducts.length && !R.isEmpty(products)) {
       setAllSelected(true);
     }
-  }, [selectedProducts, products.length]);
+  }, [selectedProducts, products]);
 
   const resetProducts = () => {
     setAvailable(false);
@@ -64,22 +64,22 @@ export const ProductContainer = () => {
   };
 
   const handleCheckbox = (product) => {
-    if (product === "all") {
-      if (products.length === selectedProducts.length) {
-        setSelectedProducts([]);
-        setAllSelected(false);
-      } else {
-        setSelectedProducts(products);
-      }
+    setAllSelected(false);
+    if (R.includes(product, selectedProducts)) {
+      setSelectedProducts(
+        R.filter((currentProduct) => currentProduct.id !== product.id)
+      );
     } else {
+      setSelectedProducts(R.append(product, selectedProducts));
+    }
+  };
+
+  const handleHeaderCheckbox = () => {
+    if (products.length === selectedProducts.length) {
+      setSelectedProducts([]);
       setAllSelected(false);
-      if (R.includes(product, selectedProducts)) {
-        setSelectedProducts(
-          R.filter((currentProduct) => currentProduct.id !== product.id)
-        );
-      } else {
-        setSelectedProducts(R.append(product, selectedProducts));
-      }
+    } else {
+      setSelectedProducts(products);
     }
   };
 
@@ -102,6 +102,7 @@ export const ProductContainer = () => {
         handleFilter={handleFilter}
         resetProducts={resetProducts}
         handleCheckbox={handleCheckbox}
+        handleHeaderCheckbox={handleHeaderCheckbox}
         selectedProducts={selectedProducts}
         allSelected={allSelected}
       />

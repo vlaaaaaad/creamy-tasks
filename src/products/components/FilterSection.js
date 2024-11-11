@@ -11,9 +11,7 @@ export const FilterSection = ({
         id="avaliable"
         className="mr-1 w-4 h-4 cursor-pointer"
         checked={available}
-        onChange={() => {
-          handleFilter(1);
-        }}
+        onChange={() => handleFilter(1)}
       />
       <label htmlFor="avaliable" className="cursor-pointer">
         Avaliable
@@ -24,9 +22,7 @@ export const FilterSection = ({
         id="pending"
         className="ml-2.5 mr-1 w-4 h-4 cursor-pointer"
         checked={pending}
-        onChange={() => {
-          handleFilter(2);
-        }}
+        onChange={() => handleFilter(2)}
       />
       <label htmlFor="pending" className="cursor-pointer">
         Pending

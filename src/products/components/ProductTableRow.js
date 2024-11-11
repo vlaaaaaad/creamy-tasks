@@ -16,9 +16,7 @@ export const ProductTableRow = ({
           name="selected"
           checked={R.includes(product, selectedProducts)}
           className="w-4 h-4 cursor-pointer"
-          onClick={() => {
-            handleCheckbox(product);
-          }}
+          onClick={() => handleCheckbox(product)}
           readOnly
         />
       </td>
