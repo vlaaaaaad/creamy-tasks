@@ -12,7 +12,6 @@ export const ProductTable = ({
   handleCheckbox,
   handleHeaderCheckbox,
   selectedProducts,
-  allSelected,
 }) => {
   const productTable = useMemo(() => {
     return R.map(
@@ -50,7 +49,7 @@ export const ProductTable = ({
                 type="checkbox"
                 name="selectAll"
                 className="w-4 h-4 cursor-pointer"
-                checked={allSelected}
+                checked={R.length(selectedProducts) === R.length(products)}
                 onChange={() => handleHeaderCheckbox()}
               />
             </th>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ordersData } from "products/ordersData.ts";
 import { ProductTable } from "products/components/ProductTable.js";
 import { SelectedProducts } from "products/components/SelectedProducts.js";
@@ -25,13 +25,6 @@ export const ProductContainer = () => {
   const [available, setAvailable] = useState(false);
   const [pending, setPending] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [allSelected, setAllSelected] = useState(false);
-
-  useEffect(() => {
-    if (products.length === selectedProducts.length && !R.isEmpty(products)) {
-      setAllSelected(true);
-    }
-  }, [selectedProducts, products]);
 
   const resetProducts = () => {
     setAvailable(false);
@@ -64,7 +57,6 @@ export const ProductContainer = () => {
   };
 
   const handleCheckbox = (product) => {
-    setAllSelected(false);
     if (R.includes(product, selectedProducts)) {
       setSelectedProducts(
         R.filter((currentProduct) => currentProduct.id !== product.id)
@@ -77,7 +69,6 @@ export const ProductContainer = () => {
   const handleHeaderCheckbox = () => {
     if (products.length === selectedProducts.length) {
       setSelectedProducts([]);
-      setAllSelected(false);
     } else {
       setSelectedProducts(products);
     }
@@ -104,7 +95,6 @@ export const ProductContainer = () => {
         handleCheckbox={handleCheckbox}
         handleHeaderCheckbox={handleHeaderCheckbox}
         selectedProducts={selectedProducts}
-        allSelected={allSelected}
       />
       <SelectedProducts
         selectedProducts={selectedProducts}

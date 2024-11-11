@@ -1,4 +1,5 @@
 import * as R from "ramda";
+import { useMemo } from "react";
 import { SelectedTableRow } from "products/components/SelectedTableRow.js";
 
 export const SelectedProducts = ({
@@ -6,6 +7,13 @@ export const SelectedProducts = ({
   totalTons,
   totalEach,
 }) => {
+  const selectedProductsTable = useMemo(() => {
+    return R.map(
+      (product) => <SelectedTableRow product={product} />,
+      selectedProducts
+    );
+  }, [selectedProducts]);
+
   const emptySelectedProducts = (
     <tr className="odd:bg-zinc-700 even:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 [&>*]:border [&>*]:border-zinc-600">
       <td key={crypto.randomUUID()}>-</td>
@@ -28,10 +36,7 @@ export const SelectedProducts = ({
         <tbody>
           {R.isEmpty(selectedProducts)
             ? emptySelectedProducts
-            : R.map(
-                (product) => <SelectedTableRow product={product} />,
-                selectedProducts
-              )}
+            : selectedProductsTable}
         </tbody>
 
         <tfoot>
