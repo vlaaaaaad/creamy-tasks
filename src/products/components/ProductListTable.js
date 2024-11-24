@@ -1,35 +1,27 @@
 import * as R from "ramda";
 import { useMemo } from "react";
 import { FilterSection } from "products/components/FilterSection.js";
-import { ProductTableRow } from "products/components/ProductTableRow.js";
+import { ProductListTableRow } from "products/components/ProductListTableRow.js";
 
-export const ProductTable = ({
+export const ProductListTable = ({
   products,
   available,
   pending,
   handleFilter,
   resetProducts,
-  handleCheckbox,
-  handleHeaderCheckbox,
-  selectedProducts,
 }) => {
   const productTable = useMemo(() => {
     return R.map(
       (product) => (
-        <ProductTableRow
-          key={crypto.randomUUID()}
-          product={product}
-          handleCheckbox={handleCheckbox}
-          selectedProducts={selectedProducts}
-        />
+        <ProductListTableRow key={crypto.randomUUID()} product={product} />
       ),
       products
     );
-  }, [products, handleCheckbox, selectedProducts]);
+  }, [products]);
 
   const emptyProductTable = (
     <tr className="[&>*]:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 font-bold">
-      <td colSpan="6">No products</td>
+      <td colSpan="4">No products</td>
     </tr>
   );
 
@@ -44,20 +36,9 @@ export const ProductTable = ({
       <table className="table-auto w-full text-center border border-zinc-600">
         <thead className="bg-zinc-800">
           <tr className="border border-zinc-600 [&>*]:p-3.5 [&>*]:border [&>*]:border-zinc-600">
-            <th>
-              <input
-                type="checkbox"
-                name="selectAll"
-                className="w-4 h-4 cursor-pointer"
-                checked={R.length(selectedProducts) === R.length(products)}
-                onChange={() => handleHeaderCheckbox()}
-              />
-            </th>
-
             <th>Name</th>
             <th>Location</th>
             <th>UOM</th>
-            <th>Qty</th>
             <th>Status</th>
           </tr>
         </thead>

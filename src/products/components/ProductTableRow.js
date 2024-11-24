@@ -20,6 +20,7 @@ export const ProductTableRow = ({
           readOnly
         />
       </td>
+
       <td key={crypto.randomUUID()}>{product.name}</td>
       <td key={crypto.randomUUID()}>{product.location.name}</td>
       <td key={crypto.randomUUID()}>{product.uom.value}</td>
