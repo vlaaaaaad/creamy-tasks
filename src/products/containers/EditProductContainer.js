@@ -12,25 +12,7 @@ export const EditProductContainer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleEdit = (updatedProduct) => {
-    dispatch(
-      updateProduct({
-        id: updatedProduct.id,
-        name: updatedProduct.name,
-        location: {
-          id: 0,
-          name: updatedProduct.location.name,
-        },
-        uom: {
-          id: 0,
-          value: updatedProduct.uom.value,
-        },
-        qty: 0,
-        status: {
-          id: 0,
-          value: updatedProduct.status.value,
-        },
-      })
-    );
+    dispatch(updateProduct(updatedProduct));
     dispatch(clearForm());
     navigate("/products");
   };

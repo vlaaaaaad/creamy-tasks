@@ -7,25 +7,7 @@ export const AddProductContainer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleAdd = (newProduct) => {
-    dispatch(
-      addProduct({
-        id: crypto.randomUUID(),
-        name: newProduct.name,
-        location: {
-          id: 0,
-          name: newProduct.location.name,
-        },
-        uom: {
-          id: 0,
-          value: newProduct.uom.value,
-        },
-        qty: 0,
-        status: {
-          id: 0,
-          value: newProduct.status.value,
-        },
-      })
-    );
+    dispatch(addProduct(newProduct));
     dispatch(clearForm());
     navigate("/products");
   };

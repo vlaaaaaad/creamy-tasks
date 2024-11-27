@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import * as R from "ramda";
 import { useDispatch, useSelector } from "react-redux";
-import { formAction, clearForm } from "products/actions";
+import { formAction, clearForm, fillForm } from "products/actions";
 import { useNavigate } from "react-router-dom";
 
 export const ProductForm = ({
@@ -57,11 +57,49 @@ export const ProductForm = ({
   );
   const formData = useSelector((state) => state.productForm);
   useEffect(() => {
-    dispatch(formAction("name", initialFormData.name));
-    dispatch(formAction("location", initialFormData.location));
-    dispatch(formAction("uom", initialFormData.uom));
-    dispatch(formAction("status", initialFormData.status));
+    dispatch(fillForm(initialFormData));
   }, []);
+  const locationOptions = useMemo(() => {
+    return R.map(
+      (location) => (
+        <option
+          key={crypto.randomUUID()}
+          id={location.id}
+          value={location.name}
+        >
+          {location.name}
+        </option>
+      ),
+      locationData
+    );
+  }, [locationData]);
+  const uomOptions = useMemo(() => {
+    return R.map(
+      (uom) => (
+        <option key={crypto.randomUUID()} id={uom.id} value={uom.value}>
+          {uom.value}
+        </option>
+      ),
+      uomData
+    );
+  }, [uomData]);
+  const formValuesAsProduct = {
+    id: productToEdit ? productToEdit.id : crypto.randomUUID(),
+    name: name,
+    location: {
+      id: R.find(R.propEq(location, "name"))(locationData).id,
+      name: location,
+    },
+    uom: {
+      id: R.find(R.propEq(uom, "value"))(uomData).id,
+      value: uom,
+    },
+    qty: 1,
+    status: {
+      id: status === "Available" ? 1 : 2,
+      value: status,
+    },
+  };
 
   return (
     <form className="bg-zinc-800 border border-zinc-600 rounded text-zinc-100 px-10 py-5">
@@ -99,18 +137,7 @@ export const ProductForm = ({
             dispatch(formAction("location", event.target.value))
           }
         >
-          {R.map(
-            (location) => (
-              <option
-                key={crypto.randomUUID()}
-                id={location.id}
-                value={location.name}
-              >
-                {location.name}
-              </option>
-            ),
-            locationData
-          )}
+          {locationOptions}
         </select>
       </div>
       <div className="flex mb-2.5">
@@ -124,14 +151,7 @@ export const ProductForm = ({
           value={uom}
           onChange={(event) => dispatch(formAction("uom", event.target.value))}
         >
-          {R.map(
-            (uom) => (
-              <option key={crypto.randomUUID()} id={uom.id} value={uom.value}>
-                {uom.value}
-              </option>
-            ),
-            uomData
-          )}
+          {uomOptions}
         </select>
       </div>
       <div className="flex mb-5">
@@ -161,25 +181,7 @@ export const ProductForm = ({
       <div className="flex flex-row-reverse items-center [&>*]:ml-2.5">
         <button
           className="text-zinc-100 rounded bg-blue-700 hover:bg-blue-800  px-4 py-2 text-xs font-bold uppercase shadow-dark-3 transition duration-500 ease-in-out disabled:cursor-not-allowed"
-          onClick={() =>
-            handleSave({
-              id: productToEdit ? productToEdit.id : crypto.randomUUID(),
-              name: name,
-              location: {
-                id: 0,
-                name: location,
-              },
-              uom: {
-                id: 0,
-                value: uom,
-              },
-              qty: 0,
-              status: {
-                id: 0,
-                value: status,
-              },
-            })
-          }
+          onClick={() => handleSave(formValuesAsProduct)}
         >
           Save
         </button>
@@ -199,10 +201,7 @@ export const ProductForm = ({
           className=" text-zinc-100 rounded bg-yellow-700 hover:bg-yellow-800  px-4 py-2 text-xs font-bold uppercase shadow-dark-3 transition duration-500 ease-in-out disabled:bg-zinc-700 disabled:text-zinc-300 disabled:cursor-not-allowed"
           disabled={R.equals(initialFormData, formData)}
           onClick={() => {
-            dispatch(formAction("name", initialFormData.name));
-            dispatch(formAction("location", initialFormData.location));
-            dispatch(formAction("uom", initialFormData.uom));
-            dispatch(formAction("status", initialFormData.status));
+            dispatch(fillForm(initialFormData));
           }}
         >
           Undo

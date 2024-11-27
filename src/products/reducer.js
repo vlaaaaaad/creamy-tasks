@@ -2,6 +2,7 @@ import * as R from "ramda";
 import {
   ADD_PRODUCT,
   CLEAR_FORM,
+  FILL_FORM,
   FORM_ACTION,
   UPDATE_PRODUCT,
 } from "products/actions";
@@ -49,6 +50,17 @@ const myReducer = (state = initialState, action) => {
           location: "Main Warehouse",
           uom: "Each",
           status: "",
+        },
+      };
+    case FILL_FORM:
+      const formData = action.formData;
+      return {
+        ...state,
+        productForm: {
+          name: formData.name,
+          location: formData.location,
+          uom: formData.uom,
+          status: formData.status,
         },
       };
     default:
