@@ -29,7 +29,7 @@ export const ProductTable = ({
 
   const emptyProductTable = (
     <tr className="[&>*]:bg-zinc-800 [&>*]:p-3.5 border border-zinc-600 font-bold">
-      <td colSpan={6}>No products</td>
+      <td colSpan="6">No products</td>
     </tr>
   );
 
@@ -53,6 +53,7 @@ export const ProductTable = ({
                 onChange={() => handleHeaderCheckbox()}
               />
             </th>
+
             <th>Name</th>
             <th>Location</th>
             <th>UOM</th>

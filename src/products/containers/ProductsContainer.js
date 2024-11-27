@@ -2,6 +2,8 @@ import { useState } from "react";
 import { ordersData } from "products/ordersData.ts";
 import { ProductTable } from "products/components/ProductTable.js";
 import { SelectedProducts } from "products/components/SelectedProducts.js";
+import { useNavigate } from "react-router-dom";
+
 import * as R from "ramda";
 
 const initialProducts = R.reduce(
@@ -20,7 +22,9 @@ const initialProducts = R.reduce(
   R.chain((order) => order.products, ordersData)
 );
 
-export const ProductContainer = () => {
+export const ProductsContainer = () => {
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState(initialProducts);
   const [available, setAvailable] = useState(false);
   const [pending, setPending] = useState(false);
@@ -101,6 +105,15 @@ export const ProductContainer = () => {
         totalTons={countTotalQty(2, selectedProducts)}
         totalEach={countTotalQty(1, selectedProducts)}
       />
+      <button
+        type="button"
+        onClick={() => navigate("/products")}
+        className={
+          "m-2.5 text-zinc-100 rounded bg-zinc-700 px-4 py-2 text-xs font-bold uppercase shadow-dark-3 transition duration-500 ease-in-out disabled:cursor-not-allowed hover:brightness-75"
+        }
+      >
+        View products
+      </button>
     </div>
   );
 };
